@@ -86,6 +86,11 @@ class MyServer(BaseHTTPRequestHandler):
         u_parse = urlparse(self.path)
         query = parse_qs(u_parse.query)
         url_start = protocol_version + "://" + self.headers['Host']
+        if u_parse.path.replace("/", "").replace("%2F", "") == "":
+            self.send_response(302)
+            self.send_header("Location", "https://github.com/SomeRandom-Dev/vxyoutube")
+            self.end_headers()
+            return
         if u_parse.path.replace("/", "").replace("%2F", "") == "oembed.json":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
